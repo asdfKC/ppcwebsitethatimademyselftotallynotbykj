@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPC OFFICIAL</title>
+    
+<link rel="icon" type="logo.png" href="https://hc-cdn.hel1.your-objectstorage.com/s/v3/c0c94a25341554153e01a96e6cf168bf9dd7460b_logo.png">
+
+    
+<style>
+    hr {
+    height: 3px;
+    color: black;
+    background-color: black;
+    }
+    
+    .foot-text {
+        color: black;
+    }
+    
+    
+    .link {
+    text-decoration: None;
+    color: white;
+    }
+        
+    hr {
+    height: 3px;
+    color: black;
+    background-color: black;
+    }
+    
+    h2 {
+        text-align: center
+    }
+    
+    p {
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    
+html, body {
+  height: 100%; 
+  margin: 0;
+}    
+    
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+    
+    footer {
+        padding: 14px;
+        text-align: center;
+        font-family: arial;
+    }
+
+header {
+    position: relative;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    background-color: rgb(34, 37, 49);
+    color: white;
+}
+
+#logo {
+    height: 100px;
+}
+
+h1 {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    color: #fff;
+}
+
+nav {
+    position: relative;
+}
+
+.ham-menu {
+    height: 35px;
+    width: 40px;
+    cursor: pointer;
+    position: relative;
+    margin-top: -20px; /* negative moves it up */
+
+}
+
+.ham-menu span {
+    display: block;
+    height: 4px;
+    width: 100%;
+    background-color: #6F86FF;
+    border-radius: 25px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.3s ease;
+}
+
+.ham-menu span:nth-child(1) { top: 0; }
+.ham-menu span:nth-child(2) { top: 50%; transform: translate(-50%, -50%); }
+.ham-menu span:nth-child(3) { bottom: 0; }
+
+.ham-menu.active span:nth-child(1) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background-color: white;
+}
+.ham-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+.ham-menu.active span:nth-child(3) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    background-color: white;
+}
+
+/* Off-screen menu */
+.off-screen-menu {
+    background-color: rgb(44, 62, 80);
+    height: 100vh;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    right: -300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2rem;
+    transition: 0.3s ease;
+}
+
+.off-screen-menu.active {
+    right: 0;
+}
+
+.off-screen-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.off-screen-menu ul li {
+    margin: 20px 0;
+    color: white;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+<header>
+    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/c0c94a25341554153e01a96e6cf168bf9dd7460b_logo.png" alt="PPC Logo" id="logo">
+    <h1>PPC Official</h1>
+    <nav>
+        <div class="ham-menu" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+</header>
+
+<div class="off-screen-menu" id="menu">
+    <ul>
+        <!-- Added id and placeholder href for the script -->
+        <li><a id="home-link" class="link" href="index.html">Home</a></li>
+        <li><a id="project-link" href="projects.html" class="link">Projects</a></li>
+        <li><a href="members.html" class ="link" id="members-link">Members</a></li>
+        <li>Coming Soon</li>
+    </ul>
+</div>
+
+<!-- NEW SCRIPT BLOCK - REPLACES THE OLD ONE -->
+<script>
+const hamburger = document.getElementById('hamburger');
+const menu = document.getElementById('menu');
+
+// Your fixed path prefix required by Hack Club Spaces
+const HACKCLUB_PATH_SUFFIX = "/s/ppc_official_website/";
+
+/**
+ * Constructs the correct absolute URL required by Hack Club Spaces 
+ * by combining the site's root URL and the required path prefix.
+ * @param {string} filename The target filename (e.g., "projects.html").
+ * @returns {string} The fully qualified absolute URL.
+ */
+function constructHackClubPath(filename) {
+    const rootUrl = window.location.origin; // Gets "https://domain.com"
+    
+    // Ignore internal anchor links (like #about)
+    if (filename.startsWith('#')) {
+        return filename;
+    }
+    // Returns: https://[current-domain]/s/ppc_official_website/filename.html
+    return rootUrl + HACKCLUB_PATH_SUFFIX + filename;
+}
+
+// USAGE: Dynamically set the correct path for all internal links on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Collect all elements that need dynamic URL construction
+    const linksToFix = [
+        document.getElementById('projects-link'),
+        document.getElementById('terms-link'),
+        document.getElementById('privacy-link')
+    ];
+
+    linksToFix.forEach(link => {
+        if (link) {
+            const filename = link.getAttribute('href');
+            // Check if the link has a simple filename (not an absolute URL already)
+            if (filename && !filename.startsWith('http') && !filename.startsWith('/s/')) {
+                link.href = constructHackClubPath(filename);
+            }
+        }
+    });
+});
+
+
+function toggleMenu(isOpen) {
+    if (isOpen) {
+        hamburger.classList.add('active');
+        menu.classList.add('active');
+    } else {
+        hamburger.classList.remove('active');
+        menu.classList.remove('active');
+    }
+}
+
+// 1. Toggle menu on hamburger click
+hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = hamburger.classList.contains('active');
+    toggleMenu(!isOpen);
+});
+
+// 2. Close menu when clicking a link (<a>) inside the menu
+// This prevents the JS from blocking the link navigation
+menu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        toggleMenu(false);
+    });
+});
+
+// 3. Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        toggleMenu(false);
+    }
+});
+
+// 4. Close menu with Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        toggleMenu(false);
+    }
+});
+</script>
+
+    
+    
+<h2>PPC - Terms of Use</h2>
+    
+    <hr>
+    
+<p><strong>Effective Date:</strong> November 15, 2025</p>
+
+<p>Welcome to <strong>PPC</strong>! By using this website, you agree to the following terms:</p>
+
+<p><strong>1. Content Disclaimer</strong><br><br>
+All information displayed on this site, including progress boards and embedded content, is provided for informational purposes only. We do not guarantee the accuracy, completeness, or reliability of any information.</p>
+
+<p><strong>2. Intellectual Property</strong><br><br>
+All website content, including design, logos, and text, is the property of <strong>PPC</strong>. Embedded content from third-party services (like Airtable) remains the property of their respective owners.</p>
+
+<p><strong>3. Limitation of Liability</strong><br><br>
+PPC is not responsible for any loss or damages resulting from the use of this website or reliance on the displayed information.</p>
+
+<p><strong>4. External Links and Embeds</strong><br><br>
+Some content may be embedded from third-party services. PPC is not responsible for the functionality, accuracy, or availability of any external content.</p>
+
+<p><strong>5. Changes to Terms</strong><br><br>
+We may update these terms at any time without prior notice. By continuing to use the website, you agree to the updated terms.</p>
+
+<p><strong>6. Contact Us</strong><br><br>
+If you have any questions about these terms, please contact us <a href="mailto://kush.joshi.701@k12.friscoisd.org">here</a>.</p>
+
+    
+    
+<footer>
+        <hr>
+        © 2025 Python Project Club |  All rights reserved
+        <br>
+        <!-- Added links and ids for the script -->
+        <p><a href="terms.html" class="foot-text" id="terms-link">Terms of Use</a></p>
+        <p><a href="privacy.html" class="foot-text" id="privacy-link">Privacy Policy</a></p>
+</footer>
+
+
+</body>
+</html>
